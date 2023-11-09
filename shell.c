@@ -6,6 +6,10 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <string.h>
+
+/* Declare environ */
+extern char **environ;
 
 /**
  * print_prompt - Displays the shell prompt
@@ -25,6 +29,7 @@ void run_shell(void)
     ssize_t read;
     pid_t pid;
     pid_t wpid;
+    int i; /* Declare i at the beginning */
 
     while (1)
     {
@@ -44,6 +49,18 @@ void run_shell(void)
         if (command[read - 1] == '\n')
             command[read - 1] = '\0';
 
+        /* Check for the "env" built-in command */
+        if (strcmp(command, "env") == 0)
+        {
+            char **env = environ;
+            while (*env)
+            {
+                printf("%s\n", *env);
+                env++;
+            }
+            continue;
+        }
+
         /* Fork a new process */
         pid = fork();
 
@@ -55,20 +72,25 @@ void run_shell(void)
 
         if (pid == 0) /* Child process */
         {
-            /* Execute the command */
-            char **argv = malloc(2 * sizeof(char *));
+            /* Parse the command and arguments */
+            char *token;
+            char **argv = malloc((len / 2 + 1) * sizeof(char *));
             if (argv == NULL)
             {
                 perror("malloc");
                 exit(EXIT_FAILURE);
             }
 
-            argv[0] = command;
-            argv[1] = NULL;
-
-            if (execve(command, argv, NULL) == -1)
+            for (i = 0, token = strtok(command, " "); token != NULL; token = strtok(NULL, " "), i++)
             {
-                perror("execve");
+                argv[i] = token;
+            }
+            argv[i] = NULL;
+
+            /* Execute the command using PATH */
+            if (execvp(argv[0], argv) == -1)
+            {
+                perror("execvp");
                 exit(EXIT_FAILURE);
             }
 
