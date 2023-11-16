@@ -19,6 +19,9 @@ void run_shell(void)
 
     while (1)
     {
+        char *args[1024];  /* Adjust the size as needed */
+        int i = 0;
+
         write(STDOUT_FILENO, "$ ", 2);
         getline(&line, &len, stdin);
 
@@ -27,9 +30,6 @@ void run_shell(void)
 
         if (fork() == 0)
         {
-            char *args[1024];  /* Adjust the size as needed */
-            int i = 0;
-
             /* Tokenize the input line into arguments */
             char *token = strtok(line, " ");
             while (token != NULL)
@@ -55,7 +55,16 @@ void run_shell(void)
         }
         else
         {
-            wait(NULL);
+            int status;
+            wait(&status);
+
+            /* Check if the command is the built-in "exit" */
+            if (strcmp(args[0], "exit") == 0)
+            {
+                /* Free allocated memory and exit the shell */
+                free(line);
+                exit(EXIT_SUCCESS);
+            }
         }
     }
 
