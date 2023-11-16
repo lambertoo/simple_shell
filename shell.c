@@ -74,6 +74,14 @@ void run_shell(void)
                 exit(EXIT_SUCCESS);
             }
 
+            /* Check if the command is the built-in "exit" */
+            if (strcmp(args[0], "exit") == 0)
+            {
+                /* Free allocated memory and exit the shell */
+                free(line);
+                exit(EXIT_SUCCESS);
+            }
+
             /* Check if the command exists in the PATH */
             if (access(args[0], X_OK) == 0)
             {
@@ -92,14 +100,6 @@ void run_shell(void)
         {
             int status;
             wait(&status);
-
-            /* Check if the command is the built-in "exit" */
-            if (strcmp(args[0], "exit") == 0)
-            {
-                /* Free allocated memory and exit the shell */
-                free(line);
-                exit(EXIT_SUCCESS);
-            }
         }
     }
 
