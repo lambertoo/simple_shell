@@ -1,4 +1,4 @@
-<S-F12>#include "header.h"
+#include "header.h"
 
 /**
  * _realloc -  reallocates a memory block using malloc and free

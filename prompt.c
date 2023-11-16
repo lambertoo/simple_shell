@@ -1,10 +1,10 @@
-#include "main.h"
+#include "header.h"
 
 /**
- * display_prompt - Display the shell prompt
+ * prompt - function that prints '$' to standard output
  */
-void display_prompt(void)
+void prompt(void)
 {
-    write(STDOUT_FILENO, "$ ", 2);
+	PRINT("$ ");
 }
 

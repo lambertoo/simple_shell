@@ -49,9 +49,9 @@ void free_all(char **input, char *line);
 /****** MISCELLANEOUS AND INPUT FUNCTIONS *******/
 
 char *_getline();
-char *space(char *str);
+char *remove_whitespace(char *str);
 char *enter(char *string);
-void hashtag_handler(char *buff);
+void remove_comments(char *buff);
 void prompt(void);
 unsigned int check_delim(char c, const char *str);
 char *_strtok(char *str, const char *delim);
@@ -123,7 +123,7 @@ int history_dis(__attribute__((unused))char **c,
 /****** BUILT-IN COMMANDS STRUCT *****/
 
 /**
- * struct _builtin - Defines a struct that conatins built-in commands
+ * struct _builtin - Defines a struct that contains built-in commands
  * with their respective implementation functions
  * @command: - Built-in command
  * @function: - Pointer to custom functions that have
@@ -136,4 +136,3 @@ typedef struct _builtin
 } builtin;
 
 #endif /*HEADER_H*/
-
