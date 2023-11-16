@@ -39,6 +39,21 @@ void run_shell(void)
             }
             args[i] = NULL;
 
+            /* Check if the command is the built-in "env" */
+            if (strcmp(args[0], "env") == 0)
+            {
+                /* Print the current environment variables */
+                char **env;
+                for (env = environ; *env != NULL; env++)
+                {
+                    printf("%s\n", *env);
+                }
+
+                /* Free allocated memory and exit the child process */
+                free(line);
+                exit(EXIT_SUCCESS);
+            }
+
             /* Check if the command exists in the PATH */
             if (access(args[0], X_OK) == 0)
             {
