@@ -8,11 +8,7 @@ char *_getline()
 {
 	int i, rd, buffer_size = BUFSIZE;
 	char c = 0, *input_buffer, *processed_input;
-<<<<<<< HEAD
-
-=======
 	
->>>>>>> 32e111597b90d5f85ecab06e9d7d5433412338e0
 	input_buffer = malloc(buffer_size);
 	if (input_buffer == NULL)
 	{
@@ -31,11 +27,7 @@ char *_getline()
 		input_buffer[i] = c;
 		if (input_buffer[0] == '\n')
 		{
-<<<<<<< HEAD
-			return (enter(input_buffer));
-=======
 			return enter(input_buffer);
->>>>>>> 32e111597b90d5f85ecab06e9d7d5433412338e0
 		}
 		if (i >= buffer_size)
 		{
@@ -45,15 +37,6 @@ char *_getline()
 				free(input_buffer);
 				return (NULL);
 			}
-<<<<<<< HEAD
-		}
-	}
-	input_buffer[i] = '\0';
-	processed_input = remove_whitespace(input_buffer);
-	free(input_buffer);
-	remove_comments(processed_input);
-	return (processed_input);
-=======
         }
     }
 
@@ -62,7 +45,6 @@ char *_getline()
     free(input_buffer);
     remove_comments(processed_input);
     return processed_input;
->>>>>>> 32e111597b90d5f85ecab06e9d7d5433412338e0
 }
 /**
  * enter - Handles newline character input.
