@@ -54,6 +54,26 @@ void run_shell(void)
                 exit(EXIT_SUCCESS);
             }
 
+            /* Check if the command is the built-in "cd" */
+            if (strcmp(args[0], "cd") == 0)
+            {
+                if (args[1] == NULL)
+                {
+                    fprintf(stderr, "cd: missing argument\n");
+                    exit(EXIT_FAILURE);
+                }
+
+                if (chdir(args[1]) != 0)
+                {
+                    perror("chdir");
+                    exit(EXIT_FAILURE);
+                }
+
+                /* Free allocated memory and exit the child process */
+                free(line);
+                exit(EXIT_SUCCESS);
+            }
+
             /* Check if the command exists in the PATH */
             if (access(args[0], X_OK) == 0)
             {
