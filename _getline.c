@@ -4,11 +4,12 @@
  * _getline - Reads input from standard input by the user.
  * Return: The input on a buffer.
  */
-char *_getline() {
-    int i, rd, buffer_size = BUFSIZE;
-    char c = 0, *input_buffer, *processed_input;
-
-    input_buffer = malloc(buffer_size);
+char *_getline()
+{
+	int i, rd, buffer_size = BUFSIZE;
+	char c = 0, *input_buffer, *processed_input;
+	
+	input_buffer = malloc(buffer_size);
     if (input_buffer == NULL) {
         free(input_buffer);
         return NULL;
