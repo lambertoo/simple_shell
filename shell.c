@@ -83,16 +83,35 @@ void run_shell(void)
             }
 
             /* Check if the command exists in the PATH */
-            if (access(args[0], X_OK) == 0)
+            if (access(args[0], X_OK) != 0)
             {
-                execve(args[0], args, environ);
-                perror("execve");  /* Print an error message if execve fails */
+                /* Search for the command in the directories specified in PATH */
+                char *path_env = getenv("PATH");
+                char *path_copy = strdup(path_env);
+                char *dir = strtok(path_copy, ":");
+
+                while (dir != NULL)
+                {
+                    char path[1024];
+                    snprintf(path, sizeof(path), "%s/%s", dir, args[0]);
+                    if (access(path, X_OK) == 0)
+                    {
+                        execve(path, args, environ);
+                        perror("execve");  /* Print an error message if execve fails */
+                        exit(EXIT_FAILURE);
+                    }
+                    dir = strtok(NULL, ":");
+                }
+
+                /* Free allocated memory and exit the child process */
+                free(path_copy);
+                fprintf(stderr, "%s: command not found\n", args[0]);
                 exit(EXIT_FAILURE);
             }
             else
             {
-                /* Print an error message if the command doesn't exist */
-                fprintf(stderr, "%s: command not found\n", args[0]);
+                execve(args[0], args, environ);
+                perror("execve");  /* Print an error message if execve fails */
                 exit(EXIT_FAILURE);
             }
         }
