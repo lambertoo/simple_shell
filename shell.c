@@ -27,8 +27,18 @@ void run_shell(void)
 
         if (fork() == 0)
         {
-            char *args[] = {"/bin/sh", "-c", NULL, NULL};
-            args[2] = line;
+            char *args[1024];  /* Adjust the size as needed */
+            int i = 0;
+
+            /* Tokenize the input line into arguments */
+            char *token = strtok(line, " ");
+            while (token != NULL)
+            {
+                args[i++] = token;
+                token = strtok(NULL, " ");
+            }
+            args[i] = NULL;
+
             execve(args[0], args, environ);
             perror("execve");  /* Print an error message if execve fails */
             exit(EXIT_FAILURE);
