@@ -39,9 +39,19 @@ void run_shell(void)
             }
             args[i] = NULL;
 
-            execve(args[0], args, environ);
-            perror("execve");  /* Print an error message if execve fails */
-            exit(EXIT_FAILURE);
+            /* Check if the command exists in the PATH */
+            if (access(args[0], X_OK) == 0)
+            {
+                execve(args[0], args, environ);
+                perror("execve");  /* Print an error message if execve fails */
+                exit(EXIT_FAILURE);
+            }
+            else
+            {
+                /* Print an error message if the command doesn't exist */
+                fprintf(stderr, "%s: command not found\n", args[0]);
+                exit(EXIT_FAILURE);
+            }
         }
         else
         {
