@@ -37,8 +37,8 @@ char *_getline()
 				free(input_buffer);
 				return (NULL);
 			}
-        }
-    }
+		}
+	}
 
     input_buffer[i] = '\0';
     processed_input = remove_whitespace(input_buffer);
@@ -51,7 +51,8 @@ char *_getline()
  * @string: String to be handled.
  * Return: Empty string.
  */
-char *enter(char *string) {
+char *enter(char *string) 
+{
     free(string);
     return "\0";
 }
@@ -61,31 +62,35 @@ char *enter(char *string) {
  * @str: Input to be modified.
  * Return: Returns the modified string.
  */
-char *remove_whitespace(char *str) {
+char *remove_whitespace(char *str)
+{
     int i, j = 0;
     char *processed_str;
 
     processed_str = malloc((strlen(str) + 1) * sizeof(char));
-    if (processed_str == NULL) {
+    if (processed_str == NULL)
+	{
         free(processed_str);
         return NULL;
     }
 
     for (i = 0; str[i] == ' '; i++);
 
-    for (; str[i + 1] != '\0'; i++) {
+    for (; str[i + 1] != '\0'; i++)
+	{
         processed_str[j] = str[i];
         j++;
     }
 
     processed_str[j] = '\0';
 
-    if (processed_str[0] == '\0' || processed_str[0] == '#') {
+    if (processed_str[0] == '\0' || processed_str[0] == '#')
+	{
         free(processed_str);
         return "\0";
     }
 
-    return processed_str;
+    return (processed_str);
 }
 
 /**
@@ -93,10 +98,12 @@ char *remove_whitespace(char *str) {
  * @input: Input buffer.
  * Return: Nothing.
  */
-void remove_comments(char *input) {
+void remove_comments(char *input)
+{
     int i;
 
-    for (i = 0; input[i] != '\0'; i++) {
+    for (i = 0; input[i] != '\0'; i++)
+	{
         if (input[i] == '#' && input[i - 1] == ' ' && input[i + 1] == ' ') {
             input[i] = '\0';
         }
