@@ -10,32 +10,33 @@ char *_getline()
 	char c = 0, *input_buffer, *processed_input;
 	
 	input_buffer = malloc(buffer_size);
-    if (input_buffer == NULL) {
-        free(input_buffer);
-        return NULL;
-    }
-
-    for (i = 0; c != EOF && c != '\n'; i++) {
-        fflush(stdin);
-        rd = read(STDIN_FILENO, &c, 1);
-
-        if (rd == 0) {
-            free(input_buffer);
-            exit(EXIT_SUCCESS);
-        }
-
-        input_buffer[i] = c;
-
-        if (input_buffer[0] == '\n') {
-            return enter(input_buffer);
-        }
-
-        if (i >= buffer_size) {
-            input_buffer = realloc(input_buffer, (buffer_size + 2) * sizeof(char));
-            if (input_buffer == NULL) {
-                free(input_buffer);
-                return NULL;
-            }
+	if (input_buffer == NULL)
+	{
+		free(input_buffer);
+		return (NULL);
+	}
+	for (i = 0; c != EOF && c != '\n'; i++)
+	{
+		fflush(stdin);
+		rd = read(STDIN_FILENO, &c, 1);
+		if (rd == 0)
+		{
+			free(input_buffer);
+			exit(EXIT_SUCCESS);
+		}
+		input_buffer[i] = c;
+		if (input_buffer[0] == '\n')
+		{
+			return enter(input_buffer);
+		}
+		if (i >= buffer_size)
+		{
+			input_buffer = realloc(input_buffer, (buffer_size + 2) * sizeof(char));
+			if (input_buffer == NULL)
+			{
+				free(input_buffer);
+				return (NULL);
+			}
         }
     }
 
