@@ -1,41 +1,44 @@
+/* shell.c */
 #include "main.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <string.h>
+
+extern char **environ;  /* Declare environ */
 
 /**
- * run_shell - Run the main loop of the shell
+ * run_shell - Function to run the shell.
  */
 void run_shell(void)
 {
-    char *command = NULL;
+    char *line;
     size_t len = 0;
 
     while (1)
     {
-        display_prompt();
+        write(STDOUT_FILENO, "$ ", 2);
+        getline(&line, &len, stdin);
 
-        /* Read a line from the user */
-        if (getline(&command, &len, stdin) == -1)
+        /* Remove newline character from the input */
+        line[strcspn(line, "\n")] = '\0';
+
+        if (fork() == 0)
         {
-            if (feof(stdin))
-            {
-                /* Handle Ctrl+D */
-                printf("\nExiting simple_shell.\n");
-                break;
-            }
-            else
-            {
-                /* Some other error */
-                perror("getline");
-                _exit(EXIT_FAILURE);
-            }
+            char *args[] = {"/bin/sh", "-c", NULL, NULL};
+            args[2] = line;
+            execve(args[0], args, environ);
+            perror("execve");  /* Print an error message if execve fails */
+            exit(EXIT_FAILURE);
         }
-
-        /* Remove newline character */
-        command[strcspn(command, "\n")] = '\0';
-
-        /* Execute the command */
-        execute_command(command);
+        else
+        {
+            wait(NULL);
+        }
     }
 
-    free(command);
+    free(line);
 }
 
